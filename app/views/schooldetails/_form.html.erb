@@ -1,64 +1,168 @@
-
-
 <%= form_for @schooldetail do |f| %>
+<% if schooldetail.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(schooldetail.errors.count, "error") %></h2>
+
+      <ul>
+      <% schooldetail.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
 <div class ="form">
-<h1 id= "newschooldetails">NEW SCHOOL DETAILS </h1>
-
+<h1 id= "newschooldetails">NEW SCHOOl DETAILS </h1>
+ <img  src="../assets/Cancel-128.png" class="deleteimg1"> 
 <div class= "part1">
-  <div class="field">
-    <%= f.label :name, "SCHOOLNAME" ,id:"schoolname" %>
-    <%= f.text_field :schoolname ,required: true%></br>
-  </div></br>
+     <div class="row ">
+        <div class="input-field col inline">
+                 <%= f.text_field :schoolname,required: true, id:"schooldetail_schoolname",class:" school-create-validation",autofocaus: true,maxlength: 15 %>
+               <label for="schoolname" id="schoolname" data-error="" data-success="right" class="error-first" >SCHOOLNAME</label>
+        </div>
+      </div>
+      <div class="row s9">
+        <div class="input-field col s9">
+           <%= f.text_area :address ,required: true,class:"school-create-validation"%>
+               <label for="address" id="schoola" data-error="" data-success="right" class="error-first">ADDRESS</label>  
+        </div>
+      </div>
+      <div class="row s9">
+        <div class="input-field col s9">
+            <%= f.text_field :city,id:"schoolcity",class:"school-create-validation",required: true ,maxlength: 10 %>
+               <label for="city" id="schoola" data-error="" data-success="right" class="error-first">CITY</label>  
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+            <%= f.text_field :state,id:"schoolstate",class:"school-create-validation",required: true ,maxlength: 10 %>
+               <label for="state" id="schoola" data-error="wrong" data-success="right" class="error-first">STATE</label>  
+        </div>
+      </div>
+       <div class="row">
+        <div class="input-field col s12">
+            <%= f.number_field :pincode ,id:"pincode",class:"school-create-validation",required: true,maxlength: 6%>
+               <label for="pincode" id="schoola" data-error="wrong" data-success="right" class="error-first">PINCODE</label>  
+        </div>
+      </div>
+</div>
 
-  <div class="schoola">
-    <%= f.label :name, "ADDRESS",id:"schooladdress" %>
-    <%= f.text_area :address ,required: true%></br>
-  </div></br>
+      
 
-  <div class="schoolcity">
-    <%= f.label :name, "CITY"%></br>
-    <%= f.text_field :city,class:"field",required: true %></br>
-  </div></br>
-
-  <div class="schoolstate ">
-    <%= f.label :name,"STATE"%></br>
-    <%= f.text_field :state,class:"field",required: true %>
-  </div>
-
-  <div class="schoolstate">
-    <%= f.label :name, "PINCODE" %></br>
-    <%= f.number_field :pincode,class:"field",required: true %>
-  </div>
-  </div>
+  
 <div class="left-part">
 
-    <%= f.label :name ,"AFFILIATED BOARD:", class:"text-muted" %><br/>
+    <%= f.label :name ,"AFFILIATED BOARD:", class:"text-muted",id:"error-first" %><br/>
     <div class="field">
     <p>
-      <%= f.radio_button :affiliatedboard, 'CBSE', id:"test1"%>
-      <label for="test1">
+      <%= f.radio_button :affiliatedboard, :value => 'CBSE', id:"test1"%>
+      <label for="test1" value="CBSE">
       <span class="test1">CBSE</span></label>
     
     
      
       <%= f.radio_button :affiliatedboard, 'ICSE', id:"test2"%>
-      <label for="test2"><span class="test1">ICSE</span></label>
+      <label for="test2" value="ICSE"><span class="test1">ICSE</span></label>
     
     
       <%= f.radio_button :affiliatedboard, 'Matric', id:"test3"%>
-      <label for="test3"><span class="test1">ICSE</span></label></br>
+      <label for="test3" value="ICSE"><span class="test1">ICSE</span></label></br>
     </p></br>
     <p>
       <%= f.radio_button :affiliatedboard, 'State Board', id:"test4"%>
-      <label for="test4"><span class="test1">State Board</span></label>
+      <label for="test4" value="State Board"><span class="test1">State Board</span></label>
     </p>
   </div>
-</div> 
-      <div class="actions">
-           <%= f.submit  class:"submit" %>
+ 
+      <div class="section wizard">
+<div class="submit custome-btn btn-floating btn-large waves-effect waves-light cyan darken-1 wizard" id= "width">
+    <%= f.submit '>', class:"submit-button"%>
+</div>
+<div class = "ssub">
+    <%= link_to '', new_schooldetail_path, class:"custome-btn btn-floating btn-large waves-effect waves-light wizard blue-grey darken-3",id:"sub" %>
+    <%= link_to '', new_schooldetail_path, class:"custome-btn btn-floating btn-large waves-effect waves-light wizard blue-grey darken-3",id:"sub" %>
+    <%= link_to '',new_schooldetail_path, class:"custome-btn btn-floating btn-large waves-effect waves-light wizard blue-grey darken-3", id:"sub" %>
+</div>
      </div>
-  </div>
+     </div>
+     
+ 
 <% end %>
+<script type = "text/javascript">
+var iChars = "!@#$%^&*()+=-_[]\\\';,./{}|\":<>?~`";
+const numbers = "0123456789";
+ 
+$(document).ready(function(){
+  var label = document.getElementsByClassName('error-first');
+ console.log( label)
+ var input = document.getElementsByClassName('school-create-validation');
+ console.log(input)
+    for(var i=0; i<input.length; i++) {
+     $(input[i]).bind("change focusout", function() {
+        validation($(this),$(this).next())
+    })
+     // $(input[i]).focusout(function() {
+    //         validation($(this), $(this).next())
+    //     })
+        // input[i].addEventListener('onFocus', validation(input[i], label[i]))
+    }
+function validation(inputValue,labelValues){
+  console.log(inputValue);
+  var input = inputValue.val();
+  console.log(input)
+  var labelValue = labelValues[0];
+  console.log(labelValue)
+   console.log($(inputValue).attr('id'))
+   
+
+   if(input.trim() === ''){
+     console.log("e1")
+    $(labelValue).attr('data-error',"can't be emity");
+    return $(inputValue).addClass("invalid").removeClass("valid")
+
+   }else{
+
+   }
+   if($(inputValue).attr('id') === "pincode"){
+       if(input.length === 6){
+      return $(inputValue).addClass("valid").removeClass("invalid")
+
+     }else{
+      return $(inputValue).addClass("invalid").removeClass("valid")
+
+     }
+}
+else{
+  for(var i= 0;i<input.length;i++){
+    if(input[i] === ' ' && input[i + 1] === ' '){
+      $(inputValue).addClass("invalid");
+      return $(labelValue).attr('data-error','Double space not allowed')
+       
+    }
+    
+    if(iChars.indexOf(input[i]) != -1){
+      // alert("e4");
+    $(inputValue).addClass("invalid").removeClass("valid");
+    return $(labelValue).attr('data-error','special cheractor not allowed')
+    
+    
+  }
+   if(numbers.indexOf(input[i]) != -1){
+      // alert("e2")
+    $(inputValue).addClass("invalid");
+    return $(labelValue).attr('data-error','number not allowed')
+       
+       
+    }
+}
+
+}
+
+return $(inputValue).addClass("valid").removeClass("invalid")
+}
+});
+</script>
 
 
 

@@ -17,11 +17,11 @@ class SchooldetailsController < ApplicationController
      p @schooldetail
      if @schooldetail.save
      p "success"
-         redirect_to @schooldetail
+         render :json => @s
 
      else 
-       p "error"
-      render :new
+         # render json: @schooldetail.errors
+       render :new
     end
 
   end
